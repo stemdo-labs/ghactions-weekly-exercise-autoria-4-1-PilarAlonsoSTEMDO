@@ -47,7 +47,7 @@ jobs:
           image_tag: ${{ needs.get_image.outputs.tag }}
 
   get-gh-image:
-      needs: build_and_push
+      needs: get_image
       runs-on: ubuntu-latest
       outputs:
         tag: ${{ steps.get_gh_tag.outputs.tag }} #output de la variable desde el action.yml
