@@ -1,5 +1,5 @@
-name: 'upload tag'
-description: 'upload tag'
+name: 'Subir artifactory'
+description: 'upload tag a gh artifactory'
 
 inputs:
   target:
@@ -9,8 +9,8 @@ inputs:
 
 outputs:
   tag:
-    description: 'gh id'
-    value: ${{ steps.get_image_tag.outputs.version }}
+    description: 'image tag extracted'
+    value: ${{ steps.get_gh_image_tag.outputs.version }}
 
 runs: 
   using: "composite"
@@ -19,7 +19,7 @@ runs:
       uses: actions/checkout@v2
 
     - name: Get Image Tag
-      id: get_image_tag
+      id: get_gh_image_tag
       shell: bash
       run: | 
         version=$(jq -r .version package.json)
@@ -28,3 +28,9 @@ runs:
         fi
         echo "version=${version}" >> "$GITHUB_OUTPUT"
         echo $GITHUB_OUTPUT
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+       name: my-artifact
+       path: my_file.txt
+       retention-days: 5
